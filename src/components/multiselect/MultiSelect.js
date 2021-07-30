@@ -1,9 +1,80 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
+import styled from 'styled-components'
 import { useCombobox } from "downshift";
 import ConditionalDisplay from '../ConditionalDisplay'
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+
+const MultiSelectWrapper = styled.div`
+  .select-list__wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .select-list__toggle {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 24px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+
+    &.is-open {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-bottom: 24px;
+      padding-top: 24px;
+    }
+  }
+
+  .select-list__items {
+    background-color: #f5f5f5;
+    border: 1px solid #cccccc;
+    border-top-color: rgb(204, 204, 204);
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top: none;
+    height: auto;
+    max-height: 70vh;
+    list-style-type: none;
+    overflow: auto;
+    padding: 16px;
+    position: absolute;
+    margin-top: 0;
+    z-index: 10;
+  }
+
+  .select-list__item {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 15px 24px;
+    transition: background-color 250ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    margin-bottom: 16px;
+    cursor: pointer;
+
+    &.is-active {
+      background-color: #00acca;
+      color: #ffffff;
+    }
+  }
+
+  label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  ${props => props.customStyles ? props.customStyles : null}
+`
 
 /** Use to create custom styled select lists for UI components. This component uses Downshift to create accessible select lists. */
 const MultiSelect = forwardRef((props, ref) => {
@@ -105,7 +176,7 @@ const MultiSelect = forwardRef((props, ref) => {
    *
    * @returns
    */
-  const renderToggleButton = () => (<>
+  const renderToggleButton = () => (<div>
     <ConditionalDisplay display={isOpen && hasButton}>
       <div className="select-list__actions">
         <ConditionalDisplay display={selectedItems.length === 0}>
@@ -136,10 +207,10 @@ const MultiSelect = forwardRef((props, ref) => {
 
     <ConditionalDisplay display={!isOpen}>
       <span className="select-list__dropdown-button" {...getToggleButtonProps()}>
-        Open
+        <FontAwesomeIcon icon={faAngleDown} />
       </span>
     </ConditionalDisplay>
-  </>)
+  </div>)
 
   const handleMainWrapperBlur = (e) => {
     const wrapperTarget = e.currentTarget;
@@ -184,78 +255,80 @@ const MultiSelect = forwardRef((props, ref) => {
   };
 
   return (
-    <div ref={ref}>
-      <div
-        {...getComboboxProps()}
-        aria-label="select an option"
-        className={`select-list form-group ${classList}`}
-        onBlur={(e) => handleMainWrapperBlur(e)}
-        onKeyUp={(e) =>
-          !isOpen &&
-          (e.key.toLocaleLowerCase() === " " ||
-            e.key.toLocaleLowerCase() === "space" ||
-            e.key.toLocaleLowerCase() === "enter")
-            ? openMenu()
-            : null
-        }
-      >
-        <label id="select-list-label" className="select-list__label" {...getLabelProps()}>
-          {label}
-        </label>
-        <div className="select-list__wrapper">
-          <div
-            className={`select-list__toggle ${openClass}`}
-            onClick={() => (isEditable && !isOpen ? openMenu() : "")}
-            tabIndex={0}
-            role="input"
-            aria-labelledby="select-list-label"
-            {...getInputProps()}
-          >
-            <div className="select-list__selected-items" tabIndex={-1}>
-              <ConditionalDisplay display={selectedItems.length >= 1}>
-                <div>
-                  <div>{selectedItems.length} selected</div>
-                  <em>{selectedItems.map((item) => item.props.content).join(", ")}</em>
-                </div>
-              </ConditionalDisplay>
+    <MultiSelectWrapper>
+      <div ref={ref}>
+        <div
+          {...getComboboxProps()}
+          aria-label="select an option"
+          className={`select-list form-group ${classList}`}
+          onBlur={(e) => handleMainWrapperBlur(e)}
+          onKeyUp={(e) =>
+            !isOpen &&
+            (e.key.toLocaleLowerCase() === " " ||
+              e.key.toLocaleLowerCase() === "space" ||
+              e.key.toLocaleLowerCase() === "enter")
+              ? openMenu()
+              : null
+          }
+        >
+          <label id="select-list-label" className="select-list__label" {...getLabelProps()}>
+            {label}
+          </label>
+          <div className="select-list__wrapper">
+            <div
+              className={`select-list__toggle ${openClass}`}
+              onClick={() => (isEditable && !isOpen ? openMenu() : "")}
+              tabIndex={0}
+              role="input"
+              aria-labelledby="select-list-label"
+              {...getInputProps()}
+            >
+              <div className="select-list__selected-items" tabIndex={-1}>
+                <ConditionalDisplay display={selectedItems.length >= 1}>
+                  <div>
+                    <div>{selectedItems.length} selected</div>
+                    <em>{selectedItems.map((item) => item.props.content).join(", ")}</em>
+                  </div>
+                </ConditionalDisplay>
 
-              <ConditionalDisplay display={selectedItems.length === 0}>
-                {`0 selected`}
-              </ConditionalDisplay>
+                <ConditionalDisplay display={selectedItems.length === 0}>
+                  {`0 selected`}
+                </ConditionalDisplay>
+              </div>
+
+              {renderToggleButton()}
             </div>
 
-            {renderToggleButton()}
+            <ul
+              className="select-list__items"
+              role="combobox"
+              tabIndex={-1}
+              {...getMenuProps()}
+              style={!isOpen ? { display: "none" } : {}}
+            >
+              {isOpen &&
+                items.map((item, index) => (
+                  <li
+                    className={`select-list__item ${itemClassList} ${itemClass(item)}`}
+                    tabIndex={0}
+                    onKeyUp={(e) => handleItemKeyboardEvent(e, item)}
+                    {...getItemProps({
+                      item,
+                      index,
+                      key: `${item.props.id}`,
+                      style: {
+                        backgroundColor: highlightedIndex === index ? "#d9f3f7" : "",
+                      },
+                    })}
+                  >
+                    {item}
+                  </li>
+                ))}
+            </ul>
           </div>
-
-          <ul
-            className="select-list__items"
-            role="combobox"
-            tabIndex={-1}
-            {...getMenuProps()}
-            style={!isOpen ? { display: "none" } : {}}
-          >
-            {isOpen &&
-              items.map((item, index) => (
-                <li
-                  className={`select-list__item ${itemClassList} ${itemClass(item)}`}
-                  tabIndex={0}
-                  onKeyUp={(e) => handleItemKeyboardEvent(e, item)}
-                  {...getItemProps({
-                    item,
-                    index,
-                    key: `${item.props.id}`,
-                    style: {
-                      backgroundColor: highlightedIndex === index ? "#d9f3f7" : "",
-                    },
-                  })}
-                >
-                  {item}
-                </li>
-              ))}
-          </ul>
         </div>
       </div>
-    </div>
+    </MultiSelectWrapper>
   );
 });
 
