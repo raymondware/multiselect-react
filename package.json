@@ -1,0 +1,70 @@
+{
+  "name": "multiselect-react",
+  "version": "0.0.1",
+  "description": "React Multiselect Component. Selection of elements can be triggered outside of component scope.",
+  "author": "raymondware",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raymondware/multiselect-react.git"
+  },
+  "main": "dist/multiselect-react.js",
+  "module": "dist/multiselect-react.js",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "scripts": {
+    "build": "webpack --mode production"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.5.4",
+    "react": ">=16.12.0",
+    "styled-components": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^8.2.5",
+    "babel-loader": "^8.0.1",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-macros": "^2.8.0",
+    "babel-plugin-styled-components": "^1.10.7",
+    "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.1.4",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.0.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-config-standard-react": "^6.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-standard": "^3.1.0",
+    "gh-pages": "^1.2.0",
+    "react-scripts": "^1.1.4",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.2.0",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "downshift": "^6.0.6"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/raymondware/multiselect-react/issues"
+  },
+  "homepage": "https://github.com/raymondware/multiselect-react#readme",
+  "directories": {
+    "example": "example"
+  },
+  "keywords": [
+    "react",
+    "component",
+    "library",
+    "multiselect",
+    "dropdown"
+  ]
+}
