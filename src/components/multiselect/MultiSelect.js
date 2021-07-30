@@ -30,8 +30,6 @@ const MultiSelectWrapper = styled.div`
     &.is-open {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      padding-bottom: 24px;
-      padding-top: 24px;
     }
   }
 
