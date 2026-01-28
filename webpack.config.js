@@ -1,36 +1,40 @@
 const path = require('path')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.ts',
   module: {
     rules: [
       {
+        test: /\.(ts|tsx)$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript'
+              ],
+              plugins: ['babel-plugin-styled-components']
+            }
+          }
+        ],
+        exclude: /node_modules/
+      },
+      {
         test: /\.js$/,
         use: {
-          loader: 'babel-loader'
-        }
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' }
-        ]
-      },
-      {
-        test: /\.(png|gif|jpg|svg)$/,
-        use: {
-          loader: 'url-loader',
+          loader: 'babel-loader',
           options: {
-            limit: 50000
+            presets: ['@babel/preset-env', '@babel/preset-react']
           }
-        }
+        },
+        exclude: /node_modules/
       }
     ]
   },
   resolve: {
-    extensions: ['.scss', '.js', '.json', '.png', '.gif', '.jpg', '.svg'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx', '.json'],
     alias: {
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom'),
@@ -38,14 +42,33 @@ module.exports = {
     }
   },
   externals: {
-    react: 'react',
-    'react-dom': 'react-dom',
-    'styled-components': 'styled-components'
+    react: {
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'react',
+      root: 'React'
+    },
+    'react-dom': {
+      commonjs: 'react-dom',
+      commonjs2: 'react-dom',
+      amd: 'react-dom',
+      root: 'ReactDOM'
+    },
+    'styled-components': {
+      commonjs: 'styled-components',
+      commonjs2: 'styled-components',
+      amd: 'styled-components',
+      root: 'styled'
+    }
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '',
     filename: 'multiselect-react.js',
-    libraryTarget: 'umd'
+    library: {
+      name: 'multiselect-react',
+      type: 'umd'
+    },
+    globalObject: 'this'
   }
 }
